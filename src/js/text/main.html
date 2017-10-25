@@ -1,0 +1,31 @@
+<div class='grid-wrapper'>
+
+    <div class='row birds'>
+
+        {{#each bird}}
+
+        <div class='card '>
+
+            <div class='main'>
+
+                <div class="birdleft">
+                    <h3>{{name}}</h3>
+                    <small>{{species}}</small>
+                </div>
+                <div class="birdright"><img src="{{img}}"></div>
+                <p>{{description}}</p>
+            </div>
+        
+            <div class="footer">
+                <div class="votally"></div><div class="btn vote" data-id="{{id}}">Vote</div>
+            </div>
+
+        </div>
+
+        {{/each}}
+
+        <iframe id="hiddenForm" name="hiddenForm" style="display:none;"></iframe>
+
+    </div>
+
+</div>
