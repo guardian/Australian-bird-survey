@@ -44,7 +44,8 @@ export class Birds {
 
         if (voted==null) {
             $( ".vote" ).css('display','block').click(function() {
-                self.formulate($(this).data('id'))
+                self.id = $(this).data('id')
+                self.formulate(self.id)
                 $('.vote').css('display','none');
             })
         } else {
@@ -61,7 +62,7 @@ export class Birds {
 
         }, 'post','hiddenForm')
 
-        //localStorage.setItem('entry.1549969409', moment().unix());
+        localStorage.setItem('entry.1549969409', moment().unix());
     }
 
     transit(path, params, method, target) {
@@ -93,25 +94,21 @@ export class Birds {
 
     prepare() {
 
+        var self = this
+
         reqwest({
-            url: 'https://interactive.guim.co.uk/2017/08/ceo-results/ceo-results.json',
+            url: 'https://interactive.guim.co.uk/2017/10/australian-bird-survey/bird-quiz-results.json', 
+
             crossOrigin: true,
             success: (resp) => {
 
                 var votes = resp
 
-                var questions = ["Question_1a","Question_1b",
-                        "Question_2a","Question_2b",
-                        "Question_3a","Question_3b",
-                        "Question_4a","Question_4b",
-                        "Question_5a","Question_5b",
-                        "Question_6a","Question_6b",
-                        "Question_7a","Question_7b",
-                        "Question_8a","Question_8b",
-                        "Question_9a","Question_9b",
-                        "Question_10a","Question_10b",
-                        "Question_11a","Question_11b"]
+                var options = []
 
+                for (var i = 0; i < 40; i++) {
+                    options.push('id'+(i+1))
+                }
 
                 var ballotbox = document.getElementsByClassName('votally');
 
@@ -119,8 +116,10 @@ export class Birds {
 
                 for (var i = 0; i < ballotbox.length; i++) {
 
+                    let id = 'id'+self.id;
+                    let count = (options[i]==id) ? votes[options[i]].votes + 1 : votes[options[i]].votes
                     try {
-                        ballotbox[i].innerHTML = votes[questions[i]].average + ' votes'
+                        $('#'+options[i]).html(count + ' votes')
                     } catch(err) {
                         console.log(err.message)
                     }

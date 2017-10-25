@@ -336,6 +336,7 @@ html {
 }
 
 .grid-wrapper {
+    font-size: 100%;
     max-width: 1260px;
     margin-left: auto;
     margin-right: auto;
@@ -543,6 +544,10 @@ vote {
         width: calc(100% - 90px);
         margin-right: 10px;
         float: left;
+    }
+
+    .birdleft small {
+        font-size: 1rem;
     }
 
     .birdright {
