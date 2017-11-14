@@ -42,16 +42,6 @@ export class Birds {
 
         var voted = localStorage.getItem("entry.1549969409");
 
-        // This is for testing only. Swich it out witht the code below when you are going live
-        $( ".vote" ).css('display','block').click(function() {
-            self.id = $(this).data('id')
-            self.formulate(self.id)
-            console.log(self.id)
-            $('.vote').css('display','none');
-        })
-        
-
-        /*
         if (voted==null) {
             $( ".vote" ).css('display','block').click(function() {
                 self.id = $(this).data('id')
@@ -62,8 +52,6 @@ export class Birds {
             $('.vote').css('display','none');
             this.prepare()
         }
-        */
-        
 
     }
 
@@ -121,6 +109,7 @@ export class Birds {
 
                 for (var i = 0; i < 50; i++) {
                     options.push('id'+(i+1))
+                    //console.log(resp['id'+(i+1)])
                 }
 
                 var ballotbox = document.getElementsByClassName('votally');
