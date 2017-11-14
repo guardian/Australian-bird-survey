@@ -119,7 +119,7 @@ export class Birds {
 
                 var options = []
 
-                for (var i = 0; i < 40; i++) {
+                for (var i = 0; i < 50; i++) {
                     options.push('id'+(i+1))
                 }
 
