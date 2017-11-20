@@ -4,10 +4,15 @@ import $ from './../lib/jquery'
 import Ractive from './../lib/ractive'
 import moment from 'moment'
 import reqwest from 'reqwest'
+import Fingerprint2 from 'fingerprintjs2'
 
 export class Birds {
 
     constructor(el, data) {
+
+        var self = this
+
+        self.powerful = null
 
         Ractive.DEBUG = false;
 
@@ -23,6 +28,12 @@ export class Birds {
           return this;
         }
 
+        this.ls = this.storageAvailable('localStorage')
+
+        new Fingerprint2().get(function(result){
+          self.powerful = result;
+        });
+
         this.database = data.sheets.Sheet1;
 
         this.database.forEach(function(value, index) {
@@ -35,9 +46,13 @@ export class Birds {
 
         this.memory = null;
 
-        var check = localStorage.getItem("entry.1549969409");
+        var check = null;
 
-        if (check!=null) {
+        if (this.ls) {
+            check = localStorage.getItem("entry.1549969409");
+        }
+
+        if (check!=null && this.ls) {
             this.memory = localStorage.getItem("entry.1549969409");
         }
 
@@ -54,6 +69,19 @@ export class Birds {
 
         this.compile()
 
+    }
+
+    storageAvailable(type) {
+       try {
+           var storage = window[type],
+               x = '__storage_test__';
+           storage.setItem(x, x);
+           storage.removeItem(x);
+           return true;
+       }
+       catch(e) {
+           return false;
+       }
     }
 
     compile() {
@@ -82,14 +110,13 @@ export class Birds {
 
         if (this.memory==null) {
 
-            this.memory = localStorage.getItem("entry.1549969409");
-
             $( ".vote" ).css('display','block').click(function() {
                 self.id = $(this).data('id')
                 self.formulate(self.id)
                 $('.vote').css('display','none');
                 $('.other_block').css('display','none');
             })
+
         } else {
             $('.vote').css('display','none');
             $('.other_block').css('display','none');
@@ -105,13 +132,16 @@ export class Birds {
         this.transit('https://docs.google.com/a/guardian.co.uk/forms/d/e/1FAIpQLSe9T84ewAMzjHOfWFzjxQQrqNrvezfjdgSQIl5CwmDLzYsQ4A/formResponse', {
 
             "entry.1549969409.other_option_response" : species,
-            "entry.1549969409": "__other_option__"
+            "entry.1549969409": "__other_option__",
+            "entry.1278920154": self.powerful
 
         }, 'post','hiddenForm')
 
         this.memory = moment().unix()
 
-        localStorage.setItem('entry.1549969409', self.memory);
+        if (this.ls) {
+            localStorage.setItem('entry.1549969409', self.memory);
+        }
 
     }
 
@@ -123,11 +153,16 @@ export class Birds {
 
             "entry.1549969409": 'Option ' + id,
 
+            "entry.1278920154": self.powerful
+
         }, 'post','hiddenForm')
 
         this.memory = moment().unix()
 
-        localStorage.setItem('entry.1549969409', self.memory);
+        if (this.ls) {
+            localStorage.setItem('entry.1549969409', self.memory);
+        }
+
     }
 
     updated() {

@@ -25,6 +25,7 @@ System.config({
     "d3": "npm:d3@4.10.0",
     "d3-svg-annotation": "npm:d3-svg-annotation@2.0.0",
     "ejs": "npm:ejs@2.5.7",
+    "fingerprintjs2": "npm:fingerprintjs2@1.5.1",
     "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
     "json": "github:systemjs/plugin-json@0.1.2",
     "moment": "npm:moment@2.19.1",
@@ -233,6 +234,10 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:fingerprintjs2@1.5.1": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:https-browserify@0.0.0": {
       "http": "github:jspm/nodelibs-http@1.7.1"

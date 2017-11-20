@@ -30,6 +30,7 @@
       "d3": "npm:d3@^4.10.0",
       "d3-svg-annotation": "npm:d3-svg-annotation@^2.0.0",
       "ejs": "npm:ejs@^2.5.7",
+      "fingerprintjs2": "npm:fingerprintjs2@^1.5.1",
       "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
       "json": "github:systemjs/plugin-json@^0.1.0",
       "moment": "npm:moment@^2.19.1",
@@ -43,6 +44,8 @@
     }
   },
   "dependencies": {
+    "fingerprintjs": "^0.5.3",
+    "fingerprintjs2": "^1.5.1",
     "jspm": "^0.16.34"
   }
 }
