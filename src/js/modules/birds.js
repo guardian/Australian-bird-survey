@@ -8,12 +8,36 @@ export class Birds {
 
     constructor(el, data) {
 
+        Ractive.DEBUG = false;
+
+        Array.prototype.shuffle = function() {
+          var i = this.length, j, temp;
+          if ( i == 0 ) return this;
+          while ( --i ) {
+             j = Math.floor( Math.random() * ( i + 1 ) );
+             temp = this[i];
+             this[i] = this[j];
+             this[j] = temp;
+          }
+          return this;
+        }
+
         this.database = data.sheets.Sheet1;
 
         this.database.forEach(function(value, index) {
-            value["id"] = index + 1;
+            value["id"] = +value["id"]
             value["species"] = value["species-name"]
         });
+
+        this.database.shuffle();
+
+        this.memory = null;
+
+        var check = localStorage.getItem("entry.1549969409");
+
+        if (check!=null) {
+            this.memory = localStorage.getItem("entry.1549969409");
+        }
 
         /*
         description
@@ -40,22 +64,55 @@ export class Birds {
             template: mainHTML
         });
 
-        var voted = localStorage.getItem("entry.1549969409");
+        $( "#other_submit" ).css('display','block').click(function() {
 
-        if (voted==null) {
+            if ($('#other_species').val() && $('#other_species').val().length > 3) {
+                var species = $('#other_species').val();
+                $('.vote').css('display','none');
+                $('.other_block').css('display','none');
+                console.log(species)
+                self.otherform(species)
+            }
+        })
+
+        if (this.memory==null) {
+
+            this.memory = localStorage.getItem("entry.1549969409");
+
             $( ".vote" ).css('display','block').click(function() {
                 self.id = $(this).data('id')
                 self.formulate(self.id)
                 $('.vote').css('display','none');
+                $('.other_block').css('display','none');
             })
         } else {
             $('.vote').css('display','none');
+            $('.other_block').css('display','none');
             this.prepare()
         }
 
     }
 
+    otherform(species) {
+
+        var self = this
+        
+        this.transit('https://docs.google.com/a/guardian.co.uk/forms/d/e/1FAIpQLSe9T84ewAMzjHOfWFzjxQQrqNrvezfjdgSQIl5CwmDLzYsQ4A/formResponse', {
+
+            "entry.1549969409.other_option_response" : species,
+            "entry.1549969409": "__other_option__"
+
+        }, 'post','hiddenForm')
+
+        this.memory = moment().unix()
+
+        localStorage.setItem('entry.1549969409', self.memory);
+
+    }
+
     formulate(id) {
+
+        var self = this
         
         this.transit('https://docs.google.com/a/guardian.co.uk/forms/d/e/1FAIpQLSe9T84ewAMzjHOfWFzjxQQrqNrvezfjdgSQIl5CwmDLzYsQ4A/formResponse', {
 
@@ -63,7 +120,9 @@ export class Birds {
 
         }, 'post','hiddenForm')
 
-        localStorage.setItem('entry.1549969409', moment().unix());
+        this.memory = moment().unix()
+
+        localStorage.setItem('entry.1549969409', self.memory);
     }
 
     transit(path, params, method, target) {

@@ -326,7 +326,6 @@ html {
 
 
 .card {
-    min-height:350px;
     float:left;
     width:32%;
     margin-right:1%;
@@ -334,6 +333,8 @@ html {
     position: relative;
     margin-bottom:25px;
 }
+
+
 
 .grid-wrapper {
     font-size: 100%;
@@ -569,15 +570,55 @@ vote {
 
 
 }
-
-@media (max-width: 400px) {
-    .main p {
-        clear: both;
-    }
-}    
+ 
 
 .birdleft small {
     color: #6c878e;
+    font-size: 1rem;
+    font-family: "Guardian Egyptian Web";
+    font-weight: 400;
+    font-style: italic;
 }
 
+@media (min-width: 900px) {
 
+    .card {
+         min-height:300px;
+    }
+
+}   
+
+@media (min-width: 600px) and (max-width: 899px){
+
+    .card {
+         min-height:330px;
+    }
+
+} 
+
+.card p {
+    font-size: 0.9rem;
+}
+
+#other_species {
+    box-sizing: border-box;
+    width: 80%;
+    margin: auto;
+    height: 30px;
+    padding: 5px;
+    line-height: 30px;
+}
+
+#other_submit {
+    float: right;
+    height: 25px;
+    width: 60px;
+    text-align: center;
+    line-height: 25px;
+    background-color: #109691;
+    color: white;
+    font-family: 'Guardian Text Sans Web', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+    font-size: 12px;
+    border-radius: 12.5px;
+    cursor: pointer;
+}
