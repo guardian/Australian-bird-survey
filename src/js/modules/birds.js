@@ -1,4 +1,5 @@
 import mainHTML from './../text/main.html!text'
+import scoreboard from './../text/scoreboard.html!text'
 import $ from './../lib/jquery'
 import Ractive from './../lib/ractive'
 import moment from 'moment'
@@ -27,6 +28,7 @@ export class Birds {
         this.database.forEach(function(value, index) {
             value["id"] = +value["id"]
             value["species"] = value["species-name"]
+            value["votes"] = 0
         });
 
         this.database.shuffle();
@@ -70,9 +72,12 @@ export class Birds {
                 var species = $('#other_species').val();
                 $('.vote').css('display','none');
                 $('.other_block').css('display','none');
-                console.log(species)
                 self.otherform(species)
             }
+        })
+
+        $( "#leaderboard_button").click(function() {
+            self.scoreboard()
         })
 
         if (this.memory==null) {
@@ -125,6 +130,12 @@ export class Birds {
         localStorage.setItem('entry.1549969409', self.memory);
     }
 
+    updated() {
+
+        document.querySelector('#timestamp').innerHTML = 'Results last updated: ' + moment().format("hh:mm A")
+
+    }
+
     transit(path, params, method, target) {
 
         method = method || "post";
@@ -151,8 +162,57 @@ export class Birds {
         this.prepare()
 
     }
+    
+    scoreboard() {
 
+        var self = this
+
+        reqwest({
+            url: 'https://interactive.guim.co.uk/2017/10/australian-bird-survey/bird-quiz-results.json', 
+
+            crossOrigin: true,
+            success: (resp) => {
+
+                var votes = resp
+
+                self.database.forEach(function(value, index) {
+                    let id = 'id'+value["id"]
+                    value["votes"] = votes[id].votes
+                });
+
+                self.database.sort(function(a, b) {
+                    return b["votes"] - a["votes"]
+                });
+
+                var max = self.database[0].votes
+
+                self.database.forEach(function(value, index) {
+                    value["rank"] = index + 1
+                    value['barWidth'] = (value['votes']/max)*100;
+                });
+
+                var ractive = new Ractive({
+                    el: self.element,
+                    data: { results : self.database },
+                    template: scoreboard
+                });
+
+                self.updated() 
+
+                $( "#standard_button").click(function() {
+                    self.compile()
+                })
+
+
+            }
+
+        });
+
+    }
+    
     prepare() {
+
+        $('#leaderboard_button').css('display','block')
 
         var self = this
 
