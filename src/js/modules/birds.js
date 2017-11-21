@@ -5,6 +5,7 @@ import Ractive from './../lib/ractive'
 import moment from 'moment'
 import reqwest from 'reqwest'
 import Fingerprint2 from 'fingerprintjs2'
+import md5 from 'md5';
 
 export class Birds {
 
@@ -12,7 +13,7 @@ export class Birds {
 
         var self = this
 
-        self.powerful = null
+        self.powerful = md5(self.prefixer())
 
         Ractive.DEBUG = false;
 
@@ -28,10 +29,12 @@ export class Birds {
           return this;
         }
 
+        self.powerful += '-'
+
         this.ls = this.storageAvailable('localStorage')
 
         new Fingerprint2().get(function(result){
-          self.powerful = result;
+          self.powerful += result;
         });
 
         this.database = data.sheets.Sheet1;
@@ -71,6 +74,16 @@ export class Birds {
 
     }
 
+    prefixer() { 
+
+        var isInIframe = (parent !== window);
+        var parentUrl = null;
+        var shareUrl = (isInIframe) ? document.referrer : window.location.href;
+        shareUrl = shareUrl.split('?')[0]
+        return shareUrl;
+
+    }
+
     storageAvailable(type) {
        try {
            var storage = window[type],
@@ -107,6 +120,7 @@ export class Birds {
         $( "#leaderboard_button").click(function() {
             self.scoreboard()
         })
+        
 
         if (this.memory==null) {
 
@@ -125,17 +139,24 @@ export class Birds {
 
     }
 
-    otherform(species) {
+    heroku(datum) {
 
         var self = this
-        
-        this.transit('https://docs.google.com/a/guardian.co.uk/forms/d/e/1FAIpQLSe9T84ewAMzjHOfWFzjxQQrqNrvezfjdgSQIl5CwmDLzYsQ4A/formResponse', {
 
-            "entry.1549969409.other_option_response" : species,
-            "entry.1549969409": "__other_option__",
-            "entry.1278920154": self.powerful
+        reqwest({
+            url: 'https://twitchers.herokuapp.com/api/', 
+            method: 'post',
+            data: { datum: datum },
+            crossOrigin: true,
+            success: (resp) => {
 
-        }, 'post','hiddenForm')
+                console.log(resp)
+
+                self.prepare()
+
+            }
+
+        });
 
         this.memory = moment().unix()
 
@@ -145,23 +166,23 @@ export class Birds {
 
     }
 
+    otherform(species) {
+
+        var self = this
+        
+        var datum = { "entry.1549969409.other_option_response" : species,"entry.1549969409": "__other_option__","entry.1278920154":  self.powerful }
+
+        this.heroku(JSON.stringify(datum))
+
+    }
+
     formulate(id) {
 
         var self = this
         
-        this.transit('https://docs.google.com/a/guardian.co.uk/forms/d/e/1FAIpQLSe9T84ewAMzjHOfWFzjxQQrqNrvezfjdgSQIl5CwmDLzYsQ4A/formResponse', {
+        var datum = { "entry.1549969409": 'Option ' + id, "entry.1278920154": self.powerful }
 
-            "entry.1549969409": 'Option ' + id,
-
-            "entry.1278920154": self.powerful
-
-        }, 'post','hiddenForm')
-
-        this.memory = moment().unix()
-
-        if (this.ls) {
-            localStorage.setItem('entry.1549969409', self.memory);
-        }
+        this.heroku(JSON.stringify(datum))
 
     }
 

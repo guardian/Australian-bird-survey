@@ -28,9 +28,11 @@ System.config({
     "fingerprintjs2": "npm:fingerprintjs2@1.5.1",
     "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
     "json": "github:systemjs/plugin-json@0.1.2",
+    "md5": "npm:md5@2.2.1",
     "moment": "npm:moment@2.19.1",
     "reqwest": "github:ded/reqwest@1.1.5",
     "text": "github:systemjs/plugin-text@0.0.2",
+    "url-parse": "npm:url-parse@1.2.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -252,6 +254,16 @@ System.config({
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "npm:is-buffer@1.1.6": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.1"
+    },
+    "npm:md5@2.2.1": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.1",
+      "charenc": "npm:charenc@0.0.2",
+      "crypt": "npm:crypt@0.0.2",
+      "is-buffer": "npm:is-buffer@1.1.6"
+    },
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -285,6 +297,10 @@ System.config({
     },
     "npm:string_decoder@0.10.31": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1"
+    },
+    "npm:url-parse@1.2.0": {
+      "querystringify": "npm:querystringify@1.0.0",
+      "requires-port": "npm:requires-port@1.0.0"
     },
     "npm:url@0.10.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",

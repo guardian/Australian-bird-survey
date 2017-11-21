@@ -33,9 +33,11 @@
       "fingerprintjs2": "npm:fingerprintjs2@^1.5.1",
       "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
       "json": "github:systemjs/plugin-json@^0.1.0",
+      "md5": "npm:md5@^2.2.1",
       "moment": "npm:moment@^2.19.1",
       "reqwest": "github:ded/reqwest@^1.1.5",
-      "text": "github:systemjs/plugin-text@^0.0.2"
+      "text": "github:systemjs/plugin-text@^0.0.2",
+      "url-parse": "npm:url-parse@^1.2.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.21",
