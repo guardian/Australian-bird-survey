@@ -2,6 +2,7 @@ import mainHTML from './../text/main.html!text'
 import scoreboard from './../text/scoreboard.html!text'
 import $ from './../lib/jquery'
 import Ractive from './../lib/ractive'
+import { Toolbelt } from './../utilities/toolbelt'
 import moment from 'moment'
 import reqwest from 'reqwest'
 import Fingerprint2 from 'fingerprintjs2'
@@ -17,17 +18,7 @@ export class Birds {
 
         Ractive.DEBUG = false;
 
-        Array.prototype.shuffle = function() {
-          var i = this.length, j, temp;
-          if ( i == 0 ) return this;
-          while ( --i ) {
-             j = Math.floor( Math.random() * ( i + 1 ) );
-             temp = this[i];
-             this[i] = this[j];
-             this[j] = temp;
-          }
-          return this;
-        }
+        this.toolbelt = new Toolbelt()
 
         self.powerful += '-'
 
@@ -185,9 +176,9 @@ export class Birds {
 
     }
 
-    updated() {
+    updated(votes) {
 
-        document.querySelector('#timestamp').innerHTML = 'Results last updated: ' + moment().format("hh:mm A")
+        document.querySelector('#timestamp').innerHTML = 'Twitchers: ' + votes + ' | Results last updated: ' + moment().format("hh:mm A")
 
     }
 
@@ -241,7 +232,10 @@ export class Birds {
 
                 var max = self.database[0].votes
 
+                var votecount = 0
+
                 self.database.forEach(function(value, index) {
+                    votecount = votecount + value['votes']
                     value["rank"] = index + 1
                     value['barWidth'] = (value['votes']/max)*100;
                 });
@@ -252,7 +246,7 @@ export class Birds {
                     template: scoreboard
                 });
 
-                self.updated() 
+                self.updated(self.toolbelt.makeItLookNice(votecount)) 
 
                 $( "#standard_button").click(function() {
                     self.compile()
