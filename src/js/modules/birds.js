@@ -121,7 +121,6 @@ export class Birds {
             self.scoreboard()
         })
         
-
         if (this.memory==null) {
 
             $( ".vote" ).css('display','block').click(function() {
